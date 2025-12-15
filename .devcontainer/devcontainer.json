@@ -25,7 +25,7 @@
     // ImageMagick + friends via apt
     "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
       // comma-separated apt packages
-      "packages": "ffmpeg,imagemagick,libvips,webp"
+      "packages": "ffmpeg,imagemagick,libvips,webp,pandoc,texlive-xetex,texlive-latex-recommended,texlive-fonts-recommended"
     },
 
     "ghcr.io/devcontainers/features/node:1": {
