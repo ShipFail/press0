@@ -34,7 +34,7 @@ Press0 is designed as an Agent Skill.
 
 1.  **Boot Promptware OS**: Ensure your agent is running the Promptware kernel.
 2.  **Invoke the Skill**:
-    > "Publish this blog post: https://example.com/my-post.md"
+    > "Publish this blog post: https://raw.githubusercontent.com/user/repo/main/post.md"
 3.  **Receive PDF**: The agent will scout, acquire, refine, and synthesize the book.
 
 ## License
