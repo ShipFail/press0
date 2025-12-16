@@ -9,6 +9,10 @@ Press0 is an AI-orchestrated publishing engine that transforms raw Markdown into
 **Single Source Publishing.**
 You shouldn't need a separate InDesign file for your book. Press0 treats your web-ready Markdown as the single source of truth, applying a rigorous "Book Publisher Protocol" to render it for physical print (6"x9" Trade).
 
+## News
+
+*   [Press0: Vibe Coding Your Way to Physical Book](https://ship.fail/blog/2025/12/16/press0-vibe-coding-your-way-to-physical-book/) (2025-12-16)
+
 ## Features
 
 -   **Prompt-Driven Architecture**: Built on [Promptware OS](https://shipfail.github.io/promptware/), using natural language prompts as logic.
