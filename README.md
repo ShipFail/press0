@@ -17,6 +17,13 @@ You shouldn't need a separate InDesign file for your book. Press0 treats your we
 -   **Typographic System**: Semantic font mapping using the IBM Plex family.
 -   **Clean Room Builds**: Stateless execution using ephemeral environments.
 
+## Success Story
+
+See Press0 in action. We took a complex, image-heavy biography from a blog and turned it into a 6"x9" memoir without touching a single line of LaTeX.
+
+*   **Input (Blog Post)**: [42 Degrees at Dawn: Architecting a Life with AI](https://preangel.ai/blog/2025/12/05/42-degrees-at-dawn-architecting-a-life-with-ai/)
+*   **Output (Press0 PDF)**: [Download the Book](https://cdn.preangel.ai/assets/media/42-degrees-at-dawn-architecting-a-life-with-ai-huan-li.pdf)
+
 ## Usage
 
 Press0 is designed as an Agent Skill.
