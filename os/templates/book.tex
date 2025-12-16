@@ -1,0 +1,169 @@
+\documentclass[11pt,twoside]{memoir}
+\usepackage{fontspec}
+
+% Use standard system fonts for MVP to avoid dependency on local assets
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{amssymb} % Added for \square support
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{eso-pic}
+\usepackage[section]{placeins}
+
+% Keep body figures proportional and aligned to text block
+\setkeys{Gin}{width=\textwidth,height=0.55\textheight,keepaspectratio}
+\setlength{\textfloatsep}{0.75\baselineskip}
+
+% Avoid automatic page break before chapter headings (page breaks handled in Markdown/Hero).
+\let\origclearforchapter\clearforchapter
+\renewcommand{\clearforchapter}{}
+
+% Ensure blank pages are truly empty
+\renewcommand{\cleardoublepage}{\clearpage\ifodd\value{page}\else\thispagestyle{empty}\hbox{}\newpage\fi}
+
+% Use memoir layout for a 6x9in book with 0.125in bleed on all sides; lock PDF page size.
+\setstocksize{9.25in}{6.25in}
+\settrimmedsize{9in}{6in}{*}
+\settrims{0.125in}{0.125in}
+\setlrmarginsandblock{1.0in}{0.7in}{*}
+\setulmarginsandblock{0.85in}{0.85in}{*}
+\checkandfixthelayout
+\pdfpagewidth=\stockwidth
+\pdfpageheight=\stockheight
+\paperwidth=\stockwidth
+\paperheight=\stockheight
+\newlength{\bleed}
+\setlength{\bleed}{0.125in}
+
+\title{$title$}
+\author{$author$}
+\hypersetup{
+  hidelinks,
+  pdfauthor={$author$},
+  pdftitle={$title$}
+}
+
+% Paragraphs & spacing
+\setlength{\parindent}{1.15em}
+\setlength{\parskip}{0.4\baselineskip} % Added breathing room between paragraphs
+\linespread{1.15} % Increased from 1.05 for Palatino's large x-height
+\setlength{\emergencystretch}{1em}
+\widowpenalty=10000
+\clubpenalty=10000
+\frenchspacing % Single space after periods (professional standard)
+\raggedbottom % Prevent vertical stretching of paragraph gaps
+
+% Lists
+\setlist{itemsep=0.25em, topsep=0.35em}
+
+% Captions (suppress figure labels/numbers; keep text styling)
+\captionsetup{font=small,labelfont=bf}
+\captionsetup[figure]{labelformat=empty,labelsep=none}
+
+% Blockquotes
+\renewenvironment{quote}{\begin{list}{}{\leftmargin=1.1em}\item\small\sffamily\itshape}{\end{list}}
+
+% Part & chapter styles
+\setsecnumdepth{none}
+\maxsecnumdepth{none}
+
+% Remove "Part N" labels (let title handle it)
+\renewcommand{\printpartname}{}
+\renewcommand{\printpartnum}{}
+\renewcommand{\partnamenum}{}
+
+\makepagestyle{preangel}
+\makeevenfoot{preangel}{}{}{\ttfamily\thepage}
+\makeoddfoot{preangel}{}{}{\ttfamily\thepage}
+\makeevenhead{preangel}{\small\ttfamily $author$}{}{}
+\makeoddhead{preangel}{}{\small\ttfamily $title$}{}
+\pagestyle{preangel}
+
+% Chapter and heading styles to support hero openers.
+\newcommand{\chapterNumberStyle}{\normalfont\sffamily\Large}
+\newcommand{\chapterTitleStyle}{\sffamily\Large\bfseries}
+
+\makechapterstyle{preangel}{
+  \renewcommand{\chapterheadstart}{}
+  \renewcommand{\printchaptername}{}
+  \renewcommand{\chapternamenum}{}
+  \renewcommand{\printchapternum}{}
+  \renewcommand{\afterchapternum}{}
+  \renewcommand{\printchaptertitle}[1]{\chapterTitleStyle ##1}
+  \setlength{\afterchapskip}{1\baselineskip} % Standardize space after title
+}
+\chapterstyle{preangel}
+
+% Section styling using memoir
+\setsecheadstyle{\sffamily\large\bfseries}
+\setbeforesecskip{-1.5\onelineskip}
+\setaftersecskip{0.8\onelineskip}
+\setsubsecheadstyle{\sffamily\normalsize\bfseries}
+\setbeforesubsecskip{-1.25\onelineskip}
+\setaftersubsecskip{0.6\onelineskip}
+
+% Full-bleed cover helper: explicit size to ignore default figure keys.
+\newcommand{\coverpage}[1]{%
+  \thispagestyle{empty}%
+  \pagestyle{empty}%
+  \AddToShipoutPictureFG*{\AtPageLowerLeft{\hspace*{-\bleed}\raisebox{-\bleed}{\includegraphics[width=\dimexpr\paperwidth+2\bleed\relax,height=\dimexpr\paperheight+2\bleed\relax,keepaspectratio=false]{#1}}}}%
+  \null\clearpage
+  \ClearShipoutPictureFG
+}
+
+% Chapter hero: full-bleed opener image with consistent height and spacing band.
+\newlength{\chapterheroheight}
+\setlength{\chapterheroheight}{0.45\paperheight}
+\newsavebox{\heroimagebox}
+\newlength{\herooffset}
+\newlength{\herovspace}
+
+\newcommand{\chapterhero}[2][\chapterheroheight]{%
+  \cleardoublepage % Force start on a new Right-Hand (odd) page
+  \thispagestyle{plain}% remove running heads for opener
+  % Scale image to full page width (add 2*bleed for full overfill)
+  \sbox{\heroimagebox}{\includegraphics[width=\dimexpr\stockwidth+2\bleed\relax,keepaspectratio]{#2}}%
+  % Calculate top-alignment offset (image should touch top of stock)
+  \setlength{\herooffset}{\dimexpr\stockheight-\ht\heroimagebox+\bleed\relax}%
+  % Place hero: no horizontal offset to keep left edge at x=0
+  \AddToShipoutPictureFG*{\AtPageLowerLeft{\put(0pt,\LenToUnit{\herooffset}){\usebox{\heroimagebox}}}}%
+  % Position text below hero: image height + 1 baseline for spacing
+  \setlength{\herovspace}{\ht\heroimagebox}
+  \vspace*{\dimexpr\herovspace+\baselineskip\relax}%
+  \noindent
+  % Shipout macro with * clears itself for the current page
+}
+
+\begin{document}
+
+% Front cover (full-bleed)
+% Use variable for cover image to allow dynamic injection
+\coverpage{$cover-image$}
+
+\frontmatter
+
+\begin{titlingpage}
+  \centering
+  \vspace*{2in}
+  {\huge\bfseries $title$}\par
+  \vspace{1em}
+  {\Large $author$}\par
+  \vspace{2in}
+\end{titlingpage}
+
+\tableofcontents*
+
+\mainmatter
+$body$
+% Back cover (full-bleed)
+\FloatBarrier
+\clearpage
+% Use variable for back cover image to allow dynamic injection
+\coverpage{$back-cover-image$}
+
+\end{document}
